@@ -1,5 +1,5 @@
 // libraries
-import React from "react";
+import React, { useEffect } from "react";
 import { API } from "aws-amplify";
 
 export default function Home() {
@@ -23,6 +23,10 @@ export default function Home() {
       console.log(`Error: ${error}`);
     }
   };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   return <div>Hello world!</div>;
 }
