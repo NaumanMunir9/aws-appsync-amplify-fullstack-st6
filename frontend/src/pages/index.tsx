@@ -13,12 +13,22 @@ export default function Home() {
     }
   }`;
 
+  const addTodoMutation = `{
+    query AddTodo($Todo: TodoInput!) {
+      addTodo(todo: $todo) {
+        id
+        title
+        done
+      }
+    }
+  }`;
+
   const fetchTodos = async () => {
     try {
       const data = await API.graphql({
         query: getTodosQuery,
       });
-      console.log(data);
+      console.log(`GetTodos: ${data}`);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
@@ -28,5 +38,32 @@ export default function Home() {
     fetchTodos();
   }, []);
 
-  return <div>Hello world!</div>;
+  const addTodo = async () => {
+    try {
+      const todo = {
+        id: "123456789",
+        title: "hey there!",
+        done: false,
+      };
+
+      const data = await API.graphql({
+        query: addTodoMutation,
+        variables: {
+          todo: todo,
+        },
+      });
+      console.log(`AddTodo: ${data}`);
+      fetchTodos();
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Home Page</h1>
+
+      <button onClick={() => addTodo}>AddTodo</button>
+    </div>
+  );
 }
